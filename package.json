@@ -1,7 +1,7 @@
 {
-	"name": "template-solidity-project",
+	"name": "@dea-sg/layerzero",
 	"version": "1.0.0",
-	"description": "Template repository for using TypeScript and Solidity",
+	"description": "layer zero modules",
 	"main": "index.js",
 	"scripts": {
 		"test": "hardhat test",
@@ -18,7 +18,11 @@
 		"prepare": "husky install"
 	},
 	"author": "",
-	"license": "MPL-2.0",
+	"files": [
+		"contracts/interfaces",
+		"contracts/layerzero"
+	],
+	"license": "MIT",
 	"devDependencies": {
 		"@nomiclabs/hardhat-ethers": "2.0.5",
 		"@nomiclabs/hardhat-etherscan": "3.0.3",
