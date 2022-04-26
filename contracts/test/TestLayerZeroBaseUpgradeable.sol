@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 pragma solidity =0.8.9;
 
-import "../layerzero/LayerZeroBaseUpgradeable.sol";
+import "../base/LayerZeroBaseUpgradeable.sol";
 
 contract TestLayerZeroBaseUpgradeable is LayerZeroBaseUpgradeable {
 	event Executed(

@@ -3,7 +3,7 @@ pragma solidity =0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
-import "./NonblockingUpgradeable.sol";
+import "../base/NonblockingUpgradeable.sol";
 import "../interfaces/IOmniERC20.sol";
 
 contract OmniERC20Upgradeable is

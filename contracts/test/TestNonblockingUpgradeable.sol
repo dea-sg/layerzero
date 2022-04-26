@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 pragma solidity =0.8.9;
 
-import "../layerzero/NonblockingUpgradeable.sol";
+import "../base/NonblockingUpgradeable.sol";
 
 contract TestNonblockingUpgradeable is NonblockingUpgradeable {
 	uint256 public status = 0;

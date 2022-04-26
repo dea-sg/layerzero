@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 pragma solidity =0.8.9;
 
-import "../layerzero/OmniERC20Upgradeable.sol";
+import "../ERC20/OmniERC20Upgradeable.sol";
 
 contract TestOmniERC20Upgradeable is OmniERC20Upgradeable {
 	function initialize(
