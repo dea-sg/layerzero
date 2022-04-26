@@ -1,5 +1,5 @@
 /* eslint-disable new-cap */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
 import { expect, use } from 'chai'

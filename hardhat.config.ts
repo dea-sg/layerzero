@@ -2,7 +2,7 @@
 import '@typechain/hardhat'
 import '@nomiclabs/hardhat-ethers'
 import '@nomiclabs/hardhat-waffle'
-import "@nomiclabs/hardhat-etherscan"
+import '@nomiclabs/hardhat-etherscan'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
@@ -29,7 +29,8 @@ const config = {
 			},
 		},
 		polygonMumbai: {
-			url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ARCHEMY_KEY!}`,
+			url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env
+				.ARCHEMY_KEY!}`,
 			accounts: {
 				mnemonic: mnemnoc,
 			},
@@ -39,8 +40,8 @@ const config = {
 		apiKey: {
 			rinkeby: process.env.ETHERSCAN_API_KEY!,
 			polygonMumbai: process.env.POLYGONSCAN_API_KEY!,
-		}
-	  }
+		},
+	},
 }
 
 export default config

@@ -1,8 +1,6 @@
 import { ethers, network } from 'hardhat'
 import { Contract } from 'ethers'
-import {
-	TestUtils,
-} from '../typechain-types'
+import { TestUtils } from '../typechain-types'
 
 export const deploy = async <C extends Contract>(name: string): Promise<C> => {
 	const factory = await ethers.getContractFactory(name)
