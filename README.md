@@ -20,7 +20,7 @@ npm install @dea-sg/layerzero
 とりあえず ERC20 を LayerZero で動かしてみたい場合は
 
 ```
-import "@dea-sg/contracts/layerzero/OmniERC20Upgradeable.sol";
+import "@dea-sg/layerzero/contracts/ERC20/OmniERC20Upgradeable.sol";
 ```
 
 とした上で、OmniERC20Upgradeable を継承したコントラクトを作成してください。

@@ -20,7 +20,8 @@
 	"author": "",
 	"files": [
 		"contracts/interfaces",
-		"contracts/layerzero"
+		"contracts/base",
+		"contracts/ERC20"
 	],
 	"license": "MIT",
 	"devDependencies": {
