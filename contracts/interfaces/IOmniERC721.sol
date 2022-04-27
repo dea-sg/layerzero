@@ -4,12 +4,12 @@ pragma solidity =0.8.9;
 /**
  * @dev Interface of the OFT standard
  */
-interface IOmniERC20 {
+interface IOmniERC721 {
 	/**
 	 * @dev send `_amount` amount of token to (`_dstChainId`, `_toAddress`)
 	 * @param _dstChainId the destination chain identifier
 	 * @param _toAddress can be any size depending on the `dstChainId`
-	 * @param _amount the quantity of tokens in wei
+	 * @param _tokenId token id
 	 * @param _refundAddress the address LayerZero refunds if too much message fee is sent
 	 * @param _zroPaymentAddress set to address(0x0) if not paying in ZRO (LayerZero Token)
 	 * @param _adapterParams is a flexible bytes array to indicate messaging adapter services
@@ -17,7 +17,7 @@ interface IOmniERC20 {
 	function send(
 		uint16 _dstChainId,
 		bytes calldata _toAddress,
-		uint256 _amount,
+		uint256 _tokenId,
 		address payable _refundAddress,
 		address _zroPaymentAddress,
 		bytes calldata _adapterParams
@@ -28,7 +28,7 @@ interface IOmniERC20 {
 	 * @param _from from address
 	 * @param _dstChainId the destination chain identifier
 	 * @param _toAddress can be any size depending on the `dstChainId`
-	 * @param _amount the quantity of tokens in wei
+	 * @param _tokenId token id
 	 * @param _refundAddress the address LayerZero refunds if too much message fee is sent
 	 * @param _zroPaymentAddress set to address(0x0) if not paying in ZRO (LayerZero Token)
 	 * @param _adapterParams is a flexible bytes array to indicate messaging adapter services
@@ -37,7 +37,7 @@ interface IOmniERC20 {
 		address _from,
 		uint16 _dstChainId,
 		bytes calldata _toAddress,
-		uint256 _amount,
+		uint256 _tokenId,
 		address payable _refundAddress,
 		address _zroPaymentAddress,
 		bytes calldata _adapterParams
@@ -49,14 +49,14 @@ interface IOmniERC20 {
 	 * @return _zroFee zero fee
 	 * @param _dstChainId the destination chain identifier
 	 * @param _toAddress can be any size depending on the `dstChainId`
-	 * @param _amount the quantity of tokens in wei
-	 * @param _useZro Set to true if zero token is used.
+	 * @param _tokenId token id
+	 * @param _useZro Set to true if zero token is used
 	 * @param _adapterParams is a flexible bytes array to indicate messaging adapter services
 	 */
 	function estimateSendFee(
 		uint16 _dstChainId,
 		bytes calldata _toAddress,
-		uint256 _amount,
+		uint256 _tokenId,
 		bool _useZro,
 		bytes calldata _adapterParams
 	) external view returns (uint256 _nativeFee, uint256 _zroFee);
@@ -69,7 +69,7 @@ interface IOmniERC20 {
 		address indexed _sender,
 		uint16 indexed _dstChainId,
 		bytes indexed _toAddress,
-		uint256 _amount,
+		uint256 _tokenId,
 		uint64 _nonce
 	);
 
@@ -80,7 +80,7 @@ interface IOmniERC20 {
 	event ReceiveFromChain(
 		uint16 _srcChainId,
 		address _toAddress,
-		uint256 _amount,
+		uint256 _tokenId,
 		uint64 _nonce
 	);
 }

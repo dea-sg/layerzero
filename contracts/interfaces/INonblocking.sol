@@ -17,7 +17,7 @@ interface INonblocking {
 	) external;
 
 	/**
-	 * @dev When a message is received, it is emit if an error occurs.
+	 * @dev When a message is received, it is emit if an error occurs
 	 */
 	event MessageFailed(
 		uint16 _srcChainId,

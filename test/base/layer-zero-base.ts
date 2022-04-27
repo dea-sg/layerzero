@@ -5,13 +5,18 @@
 import { expect, use } from 'chai'
 import { ethers, waffle } from 'hardhat'
 import { solidity, MockContract } from 'ethereum-waffle'
-import { deploy, makeSnapshot, resetChain, makeRoleErrorMessage } from './utils'
+import {
+	deploy,
+	makeSnapshot,
+	resetChain,
+	makeRoleErrorMessage,
+} from '../utils'
 import {
 	TestLayerZeroBaseUpgradeable,
 	TestUtils,
 	TestEndPoint,
-} from '../typechain-types'
-import { abi as LayerZeroEndpoint } from '../artifacts/contracts/interfaces/ILayerZeroEndpoint.sol/ILayerZeroEndpoint.json'
+} from '../../typechain-types'
+import { abi as LayerZeroEndpoint } from '../../artifacts/contracts/interfaces/ILayerZeroEndpoint.sol/ILayerZeroEndpoint.json'
 const { deployMockContract } = waffle
 
 use(solidity)

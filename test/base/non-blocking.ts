@@ -2,8 +2,13 @@
 import { expect, use } from 'chai'
 import { ethers } from 'hardhat'
 import { solidity } from 'ethereum-waffle'
-import { deploy, makeSnapshot, resetChain, makeRoleErrorMessage } from './utils'
-import { TestUtils, TestNonblockingUpgradeable } from '../typechain-types'
+import {
+	deploy,
+	makeSnapshot,
+	resetChain,
+	makeRoleErrorMessage,
+} from '../utils'
+import { TestUtils, TestNonblockingUpgradeable } from '../../typechain-types'
 
 use(solidity)
 

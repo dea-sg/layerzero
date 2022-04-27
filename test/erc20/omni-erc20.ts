@@ -1,9 +1,9 @@
 import { expect, use } from 'chai'
 import { ethers, waffle } from 'hardhat'
 import { solidity, MockContract } from 'ethereum-waffle'
-import { deploy, makeSnapshot, resetChain } from './utils'
-import { TestOmniERC20Upgradeable } from '../typechain-types'
-import { abi as LayerZeroEndpoint } from '../artifacts/contracts/interfaces/ILayerZeroEndpoint.sol/ILayerZeroEndpoint.json'
+import { deploy, makeSnapshot, resetChain } from '../utils'
+import { TestOmniERC20Upgradeable } from '../../typechain-types'
+import { abi as LayerZeroEndpoint } from '../../artifacts/contracts/interfaces/ILayerZeroEndpoint.sol/ILayerZeroEndpoint.json'
 const { deployMockContract } = waffle
 
 use(solidity)
@@ -18,7 +18,6 @@ describe('OmniERC20', () => {
 		mockEndPoint = await deployMockContract(deployer, LayerZeroEndpoint)
 		token = await deploy<TestOmniERC20Upgradeable>('TestOmniERC20Upgradeable')
 		await token.initialize('token', 'TOKEN', mockEndPoint.address)
-		// Utils = await deploy<TestUtils>('TestUtils')
 	})
 	beforeEach(async () => {
 		snapshot = await makeSnapshot()
@@ -38,8 +37,8 @@ describe('OmniERC20', () => {
 			const result = await token.estimateSendFee(
 				1,
 				other.address,
-				false,
 				100,
+				false,
 				'0x'
 			)
 			expect(result[0].toString()).to.be.equal('5')

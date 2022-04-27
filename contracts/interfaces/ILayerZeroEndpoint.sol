@@ -6,7 +6,7 @@ import "./ILayerZeroUserApplicationConfig.sol";
 // It will be removed eventually.
 // npm install @layerzerolabs/contracts
 interface ILayerZeroEndpoint is ILayerZeroUserApplicationConfig {
-	// @notice send a LayerZero message to the specified address at a LayerZero endpoint.
+	// @notice send a LayerZero message to the specified address at a LayerZero endpoint
 	// @param _dstChainId - the destination chain identifier
 	// @param _destination - the address on destination chain (in bytes). address length/format may vary by chains
 	// @param _payload - a custom bytes payload to send to the destination contract
@@ -80,7 +80,7 @@ interface ILayerZeroEndpoint is ILayerZeroUserApplicationConfig {
 		bytes calldata _payload
 	) external;
 
-	// @notice query if any STORED payload (message blocking) at the endpoint.
+	// @notice query if any STORED payload (message blocking) at the endpoint
 	// @param _srcChainId - the source chain identifier
 	// @param _srcAddress - the source chain contract address
 	function hasStoredPayload(uint16 _srcChainId, bytes calldata _srcAddress)
@@ -88,14 +88,14 @@ interface ILayerZeroEndpoint is ILayerZeroUserApplicationConfig {
 		view
 		returns (bool);
 
-	// @notice query if the _libraryAddress is valid for sending msgs.
+	// @notice query if the _libraryAddress is valid for sending msgs
 	// @param _userApplication - the user app address on this EVM chain
 	function getSendLibraryAddress(address _userApplication)
 		external
 		view
 		returns (address);
 
-	// @notice query if the _libraryAddress is valid for receiving msgs.
+	// @notice query if the _libraryAddress is valid for receiving msgs
 	// @param _userApplication - the user app address on this EVM chain
 	function getReceiveLibraryAddress(address _userApplication)
 		external
@@ -114,7 +114,7 @@ interface ILayerZeroEndpoint is ILayerZeroUserApplicationConfig {
 	// @param _version - messaging library version
 	// @param _chainId - the chainId for the pending config change
 	// @param _userApplication - the contract address of the user application
-	// @param _configType - type of configuration. every messaging library has its own convention.
+	// @param _configType - type of configuration. every messaging library has its own convention
 	function getConfig(
 		uint16 _version,
 		uint16 _chainId,

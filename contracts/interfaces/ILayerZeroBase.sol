@@ -7,7 +7,7 @@ interface ILayerZeroBase {
 	/**
 	 * @dev check block list
 	 * @param _chainId - the chainId for the pending config change
-	 * @param _configType - type of configuration. every messaging library has its own convention.
+	 * @param _configType - type of configuration. every messaging library has its own convention
 	 * @return bytes config
 	 */
 	function getConfig(
