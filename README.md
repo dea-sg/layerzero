@@ -28,6 +28,17 @@ import "@dea-sg/layerzero/contracts/ERC20/OmniERC20Upgradeable.sol";
 
 そのコントラクトを Ethereum rinkeby や Polygon mumbai にデプロイしてください。
 
+## 準備
+### initialize
+デプロイしたあと、各コントラクトのinitializeをしてください。
+nameとsymbolは任意のものを、endpointは[チェーンにあったアドレス](https://layerzero.gitbook.io/docs/technical-reference/testnet/testnet-addresses)を設定してください。
+例えばRinkebyの場合は0x79a63d6d8BBD5c6dfc774dA79bCcD948EAcb53FAとなります。
+
+### setTrustedRemote
+setTrustedRemote関数を実行してください。この関数は信用できる通信相手の設定をするための関数です。
+例えば、Ethereum rinkeby や Polygon mumbai にデプロイした場合、rinkebyにデプロイしたコントラクトのsetTrustedRemoteはmumbaiのチェーンIDとmumbaiにデプロイしたコントラクトのアドレスを設定します。mumbaiにデプロイしたコントラクトのsetTrustedRemoteにはrinkebyのチェーンIDとrinkebyにデプロイしたコントラクトのアドレスを設定します。
+rinkebyのチェーンIDは10001で、mumbaiのチェーンIDは10009です。
+
 ## 動かし方
 
 send 関数を実行してください。別チェーンにトークンが送信されます。
