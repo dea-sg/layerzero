@@ -21,7 +21,8 @@
 	"files": [
 		"contracts/interfaces",
 		"contracts/base",
-		"contracts/ERC20"
+		"contracts/ERC20",
+		"contracts/ERC721"
 	],
 	"license": "MIT",
 	"devDependencies": {
