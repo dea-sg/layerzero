@@ -33,7 +33,7 @@ contract OmniERC721Upgradeable is
 		string memory _name,
 		string memory _symbol,
 		address _endpoint
-	) public onlyInitializing {
+	) internal onlyInitializing {
 		__ERC721_init(_name, _symbol);
 		__Nonblocking_init(_endpoint);
 	}
