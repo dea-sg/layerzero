@@ -39,6 +39,9 @@ abstract contract NonblockingUpgradeable is
 		{
 			// do nothing
 		} catch Error(string memory _err) {
+			failedMessages[_srcChainId][_srcAddress][_nonce] = keccak256(
+				_payload
+			);
 			emit MessageFailed(
 				_srcChainId,
 				_srcAddress,
@@ -48,6 +51,9 @@ abstract contract NonblockingUpgradeable is
 				""
 			);
 		} catch (bytes memory _err) {
+			failedMessages[_srcChainId][_srcAddress][_nonce] = keccak256(
+				_payload
+			);
 			emit MessageFailed(
 				_srcChainId,
 				_srcAddress,
