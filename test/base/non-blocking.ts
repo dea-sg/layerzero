@@ -89,30 +89,18 @@ describe('Nonblocking', () => {
 	describe('blockingLzReceive', () => {
 		describe('success', () => {
 			it('save error message(revert)', async () => {
-				await token.setFailedMessage(
-					1,
-					'0x1234',
-					2,
-					ethers.utils.keccak256('0x9999')
-				)
 				await token.changeStatus(1)
 				await expect(token.blockingLzReceive(1, '0x1234', 2, '0x9999'))
 					.to.emit(token, 'MessageFailed')
-					.withArgs(1, '0x1234', 2, '0x9999', 'error!!!!', '0x')
+					.withArgs(1, '0x1234', 2, '0x9999', 'error!!!!')
 				const message = await token.getFailedMessage(1, '0x1234', 2)
 				expect(message).to.be.equal(ethers.utils.keccak256('0x9999'))
 			})
 			it('save error message(other)', async () => {
-				await token.setFailedMessage(
-					1,
-					'0x1234',
-					2,
-					ethers.utils.keccak256('0x9999')
-				)
 				await token.changeStatus(2)
 				await expect(token.blockingLzReceive(1, '0x1234', 2, '0x9999'))
 					.to.emit(token, 'MessageFailed')
-					.withArgs(1, '0x1234', 2, '0x9999', '', '0x')
+					.withArgs(1, '0x1234', 2, '0x9999', '')
 				const message = await token.getFailedMessage(1, '0x1234', 2)
 				expect(message).to.be.equal(ethers.utils.keccak256('0x9999'))
 			})

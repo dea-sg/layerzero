@@ -47,8 +47,7 @@ abstract contract NonblockingUpgradeable is
 				_srcAddress,
 				_nonce,
 				_payload,
-				_err,
-				""
+				_err
 			);
 		} catch (bytes memory _err) {
 			failedMessages[_srcChainId][_srcAddress][_nonce] = keccak256(
@@ -59,8 +58,7 @@ abstract contract NonblockingUpgradeable is
 				_srcAddress,
 				_nonce,
 				_payload,
-				"",
-				_err
+				string(_err)
 			);
 		}
 	}

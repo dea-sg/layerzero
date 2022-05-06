@@ -24,7 +24,6 @@ interface INonblocking {
 		bytes _srcAddress,
 		uint64 _nonce,
 		bytes _payload,
-		string _errStr,
-		bytes _errBytes
+		string _errStr
 	);
 }
