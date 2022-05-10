@@ -1,64 +1,95 @@
 # Layer Zero base contract
 
-## 免責事項
+## disclaimer
 
-ソースの内容について、妥当性や正確性について保証しません。
-利用者の自己責任にてご利用ください。
+We do not guarantee the validity or accuracy of the sources.
+Use at your own risk.
 
-## 使い方
+## how to use
+
+### install command
 
 ```
 yarn add @dea-sg/layerzero
-もしくは
+or
 npm install @dea-sg/layerzero
 ```
 
-で利用できます
+### create contract
 
-## 使い方
-
-とりあえず ERC20 を LayerZero で動かしてみたい場合は
+If you want to create a LayerZero compliant ERC20
 
 ```
 import "@dea-sg/layerzero/contracts/ERC20/OmniERC20Upgradeable.sol";
+
+contract Token is OmniERC20Upgradeable {
+	function initialize(
+		string memory _name,
+		string memory _symbol,
+		address _endpoint
+	) external initializer {
+		__OmniERC20_init(_name, _symbol, _endpoint);
+	}
+}
 ```
 
-とした上で、OmniERC20Upgradeable を継承したコントラクトを作成してください。
-そうすれば upgradable で LayerZero の機能を兼ね揃えた ERC20 が作成できます。
+If you want to create a LayerZero compliant ERC721
 
-そのコントラクトを Ethereum rinkeby や Polygon mumbai にデプロイしてください。
+```
+import "@dea-sg/layerzero/contracts/ERC721/OmniERC721Upgradeable.sol";
 
-## 準備
+contract Nft is OmniERC721Upgradeable {
+	function initialize(
+		string memory _name,
+		string memory _symbol,
+		address _endpoint
+	) external initializer {
+		__OmniERC721_init(_name, _symbol, _endpoint);
+	}
+}
+```
+
+After creating the contract, deploy it to the required chain.
+Note that this contract supports the proxy pattern.
 
 ### initialize
 
-デプロイしたあと、各コントラクトの initialize をしてください。
-name と symbol は任意のものを、endpoint は[チェーンにあったアドレス](https://layerzero.gitbook.io/docs/technical-reference/testnet/testnet-addresses)を設定してください。
-例えば Rinkeby の場合は 0x79a63d6d8BBD5c6dfc774dA79bCcD948EAcb53FA となります。
+After deployment, execute the initialize function for each contract.
+
+Set name and symbol to anything you like, and endpoint to [here](https://layerzero.gitbook.io/docs/technical-reference/testnet/testnet-addresses).
+
+For example, for Rinkeby, set 0x79a63d6d8BBD5c6dfc774dA79bCcD948EAcb53FA.
 
 ### setTrustedRemote
 
-setTrustedRemote 関数を実行してください。この関数は信用できる通信相手の設定をするための関数です。
-例えば、Ethereum rinkeby や Polygon mumbai にデプロイした場合、rinkeby にデプロイしたコントラクトの setTrustedRemote は mumbai のチェーン ID と mumbai にデプロイしたコントラクトのアドレスを設定します。mumbai にデプロイしたコントラクトの setTrustedRemote には rinkeby のチェーン ID と rinkeby にデプロイしたコントラクトのアドレスを設定します。
-rinkeby のチェーン ID は 10001 で、mumbai のチェーン ID は 10009 です。
+Execute the setTrustedRemote function. This function is used to set the trusted remote.
 
-## 動かし方
+For example, if you deploy to Ethereum rinkeby or Polygon mumbai, the setTrustedRemote of the contract deployed to rinkeby sets the mumbai chain ID and the address of the contract deployed to mumbai.
 
-send 関数を実行してください。別チェーンにトークンが送信されます。
-当たり前ですが、send 関数を実行するウォレットに残高は必要です。事前の mint をお願いします。
-payable になっているので、例えば eth->polygon の場合は 0.1ether とか付与してください。
-これは送信先チェーンを動かすガス代です。多かった場合は\_refundAddress に戻ってくるので、安心してください。
+The setTrustedRemote of the contract deployed in mumbai is set to the chain ID of rinkeby and the address of the contract deployed in rinkeby.
 
-引数の情報は下記です
+The chain ID for rinkeby is 10001 and for mumbai is 10009.
 
-\_dstChainId：[チェーンの ID](https://layerzero.gitbook.io/docs/technical-reference/testnet/testnet-addresses)
+### how to move
 
-\_toAddress：送信先のチェーンのアドレス
+Executing the send function sends the token to another chain.
 
-\_amount：送信したいトークン数
+Naturally, the balance must be in the wallet where the send function is executed. Please mint in advance.
 
-\_refundAddress：送信先チェーン
+The send function is payable, For example, when you send a token from Ethreum mainnet to polygon, you should grant 0.1ether and run it.
 
-\_zroPaymentAddress：将来の機能拡張用です。今は null アドレスを設定してください。
+This is the gas cost to move the destination chain. If it is too much, it will be returned to \_refundAddress.
 
-\_adapterParams：将来の機能拡張用です。今は 0x としておいてください。
+Argument information is as follows
+
+\_dstChainId：[chain ID](https://layerzero.gitbook.io/docs/technical-reference/testnet/testnet-addresses)
+
+\_toAddress：Address of the destination chain
+
+\_amount：Number of tokens to be sent
+
+\_refundAddress：destination chain
+
+\_zroPaymentAddress：This is for future functionality extensions. For now, set a null address.
+
+\_adapterParams：This is for future functionality. Leave it as 0x for now.
