@@ -2,7 +2,7 @@
 pragma solidity =0.8.9;
 
 /**
- * @dev Interface of the OFT standard
+ * @dev Interface of the OmniERC20 standard
  */
 interface IOmniERC20 {
 	/**
