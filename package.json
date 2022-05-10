@@ -1,6 +1,6 @@
 {
 	"name": "@dea-sg/layerzero",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "layer zero modules",
 	"main": "index.js",
 	"scripts": {
