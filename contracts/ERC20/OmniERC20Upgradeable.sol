@@ -20,25 +20,6 @@ contract OmniERC20Upgradeable is
 		__Nonblocking_init(_endpoint);
 	}
 
-	function send(
-		uint16 _dstChainId,
-		bytes calldata _toAddress,
-		uint256 _amount,
-		address payable _refundAddress,
-		address _zroPaymentAddress,
-		bytes calldata _adapterParams
-	) external payable virtual override {
-		_send(
-			_msgSender(),
-			_dstChainId,
-			_toAddress,
-			_amount,
-			_refundAddress,
-			_zroPaymentAddress,
-			_adapterParams
-		);
-	}
-
 	function sendFrom(
 		address _from,
 		uint16 _dstChainId,
@@ -48,7 +29,6 @@ contract OmniERC20Upgradeable is
 		address _zroPaymentAddress,
 		bytes calldata _adapterParams
 	) external payable virtual override {
-		_spendAllowance(_from, _msgSender(), _amount);
 		_send(
 			_from,
 			_dstChainId,
@@ -138,6 +118,8 @@ contract OmniERC20Upgradeable is
 		bytes memory,
 		uint256 _amount
 	) internal virtual {
+		address spender = _msgSender();
+		if (_from != spender) _spendAllowance(_from, spender, _amount);
 		_burn(_from, _amount);
 	}
 

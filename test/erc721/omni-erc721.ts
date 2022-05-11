@@ -69,7 +69,7 @@ describe('OmniERC721', () => {
 		})
 	})
 
-	describe('send', () => {
+	describe('sendFrom(mine)', () => {
 		describe('success', () => {
 			it('burned token', async () => {
 				const empty1 = ethers.Wallet.createRandom()
@@ -105,7 +105,8 @@ describe('OmniERC721', () => {
 				expect(beforeBalance.toString()).to.be.equal('1')
 
 				await token.setTrustedRemote(1, dstContract.address)
-				await token.send(
+				await token.sendFrom(
+					deployer.address,
 					1,
 					dstWallet.address,
 					100,
@@ -152,7 +153,8 @@ describe('OmniERC721', () => {
 				await token.mint(deployer.address, 100)
 				await token.setTrustedRemote(1, dstContract.address)
 				await expect(
-					token.send(
+					token.sendFrom(
+						deployer.address,
 						1,
 						dstWallet.address,
 						100,
@@ -173,17 +175,45 @@ describe('OmniERC721', () => {
 				const empty1 = ethers.Wallet.createRandom()
 				const empty2 = ethers.Wallet.createRandom()
 				const empty3 = ethers.Wallet.createRandom()
+				const [deployer] = await ethers.getSigners()
 				await token.mint(empty3.address, 2)
 				await expect(
-					token.send(1, empty1.address, 2, empty2.address, empty3.address, '0x')
-				).to.be.revertedWith(
-					'ERC721: transfer caller is not owner nor approved'
-				)
+					token.sendFrom(
+						deployer.address,
+						1,
+						empty1.address,
+						2,
+						empty2.address,
+						empty3.address,
+						'0x'
+					)
+				).to.be.revertedWith('ERC721: send caller is not owner nor approved')
+			})
+			it('do not have token.', async () => {
+				const empty1 = ethers.Wallet.createRandom()
+				const empty2 = ethers.Wallet.createRandom()
+				const empty3 = ethers.Wallet.createRandom()
+				const [deployer, other] = await ethers.getSigners()
+				await token.mint(deployer.address, 2)
+				await token.setApprovalForAll(other.address, true)
+				await expect(
+					token
+						.connect(other)
+						.sendFrom(
+							empty3.address,
+							1,
+							empty1.address,
+							2,
+							empty2.address,
+							empty3.address,
+							'0x'
+						)
+				).to.be.revertedWith('ERC721: send from incorrect owner')
 			})
 		})
 	})
 
-	describe('sendFrom', () => {
+	describe('sendFrom(other)', () => {
 		describe('success', () => {
 			it('burned token', async () => {
 				const empty1 = ethers.Wallet.createRandom()
@@ -287,31 +317,6 @@ describe('OmniERC721', () => {
 				)
 					.to.emit(token, 'SendToChain')
 					.withArgs(deployer.address, 1, dstWallet.address, 100, 98)
-			})
-		})
-		describe('fail', () => {
-			it('do not have token.', async () => {
-				const empty1 = ethers.Wallet.createRandom()
-				const empty2 = ethers.Wallet.createRandom()
-				const empty3 = ethers.Wallet.createRandom()
-				const [deployer, other] = await ethers.getSigners()
-				await token.mint(deployer.address, 100)
-
-				await expect(
-					token
-						.connect(other)
-						.sendFrom(
-							deployer.address,
-							1,
-							empty1.address,
-							100,
-							empty2.address,
-							empty3.address,
-							'0x'
-						)
-				).to.be.revertedWith(
-					'ERC721: transfer caller is not owner nor approved'
-				)
 			})
 		})
 	})
