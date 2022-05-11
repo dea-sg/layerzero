@@ -69,7 +69,7 @@ describe('OmniERC20', () => {
 		})
 	})
 
-	describe('send', () => {
+	describe('sendFrom(mine)', () => {
 		describe('success', () => {
 			it('burned token', async () => {
 				const empty1 = ethers.Wallet.createRandom()
@@ -105,7 +105,8 @@ describe('OmniERC20', () => {
 				expect(beforeBalance.toString()).to.be.equal('100')
 
 				await token.setTrustedRemote(1, dstContract.address)
-				await token.send(
+				await token.sendFrom(
+					deployer.address,
 					1,
 					dstWallet.address,
 					50,
@@ -152,7 +153,8 @@ describe('OmniERC20', () => {
 				await token.mint(deployer.address, 100)
 				await token.setTrustedRemote(1, dstContract.address)
 				await expect(
-					token.send(
+					token.sendFrom(
+						deployer.address,
 						1,
 						dstWallet.address,
 						50,
@@ -173,9 +175,18 @@ describe('OmniERC20', () => {
 				const empty1 = ethers.Wallet.createRandom()
 				const empty2 = ethers.Wallet.createRandom()
 				const empty3 = ethers.Wallet.createRandom()
+				const [deployer] = await ethers.getSigners()
 
 				await expect(
-					token.send(1, empty1.address, 2, empty2.address, empty3.address, '0x')
+					token.sendFrom(
+						deployer.address,
+						1,
+						empty1.address,
+						2,
+						empty2.address,
+						empty3.address,
+						'0x'
+					)
 				).to.be.revertedWith('ERC20: burn amount exceeds balance')
 			})
 			it('trusted address is not set.', async () => {
@@ -186,7 +197,15 @@ describe('OmniERC20', () => {
 
 				await token.mint(deployer.address, 100)
 				await expect(
-					token.send(1, empty1.address, 2, empty2.address, empty3.address, '0x')
+					token.sendFrom(
+						deployer.address,
+						1,
+						empty1.address,
+						2,
+						empty2.address,
+						empty3.address,
+						'0x'
+					)
 				).to.be.revertedWith(
 					'LzSend: destination chain is not a trusted source'
 				)
@@ -194,7 +213,7 @@ describe('OmniERC20', () => {
 		})
 	})
 
-	describe('sendFrom', () => {
+	describe('sendFrom(other)', () => {
 		describe('success', () => {
 			it('burned token', async () => {
 				const empty1 = ethers.Wallet.createRandom()

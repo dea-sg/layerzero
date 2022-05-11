@@ -72,7 +72,7 @@ The chain ID for rinkeby is 10001 and for mumbai is 10009.
 
 ### how to move
 
-Executing the send function sends the token to another chain.
+Executing the sendFrom function sends the token to another chain.
 
 Naturally, the balance must be in the wallet where the send function is executed. Please mint in advance.
 
@@ -81,6 +81,8 @@ The send function is payable, For example, when you send a token from Ethreum ma
 This is the gas cost to move the destination chain. If it is too much, it will be returned to \_refundAddress.
 
 Argument information is as follows
+
+\_from: from address
 
 \_dstChainId：[chain ID](https://layerzero.gitbook.io/docs/technical-reference/testnet/testnet-addresses)
 

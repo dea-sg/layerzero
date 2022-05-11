@@ -38,25 +38,6 @@ contract OmniERC721Upgradeable is
 		__Nonblocking_init(_endpoint);
 	}
 
-	function send(
-		uint16 _dstChainId,
-		bytes calldata _toAddress,
-		uint256 _tokenId,
-		address payable _refundAddress,
-		address _zroPaymentAddress,
-		bytes calldata _adapterParams
-	) external payable virtual override {
-		_send(
-			_msgSender(),
-			_dstChainId,
-			_toAddress,
-			_tokenId,
-			_refundAddress,
-			_zroPaymentAddress,
-			_adapterParams
-		);
-	}
-
 	function sendFrom(
 		address _from,
 		uint16 _dstChainId,
@@ -103,19 +84,19 @@ contract OmniERC721Upgradeable is
 		bytes memory _payload
 	) internal virtual override {
 		// decode and load the toAddress
-		(bytes memory toAddress, uint256 tokenId) = abi.decode(
+		(bytes memory toAddressBytes, uint256 tokenId) = abi.decode(
 			_payload,
 			(bytes, uint256)
 		);
-		address localToAddress;
+		address toAddress;
 		// solhint-disable-next-line no-inline-assembly
 		assembly {
-			localToAddress := mload(add(toAddress, 20))
+			toAddress := mload(add(toAddressBytes, 20))
 		}
 
-		_afterReceive(_srcChainId, localToAddress, tokenId);
+		_creditTo(_srcChainId, toAddress, tokenId);
 
-		emit ReceiveFromChain(_srcChainId, localToAddress, tokenId, _nonce);
+		emit ReceiveFromChain(_srcChainId, toAddress, tokenId, _nonce);
 	}
 
 	function _send(
@@ -127,12 +108,7 @@ contract OmniERC721Upgradeable is
 		address _zroPaymentAddress,
 		bytes calldata _adapterParams
 	) internal virtual {
-		// solhint-disable-next-line reason-string
-		require(
-			_isApprovedOrOwner(_msgSender(), _tokenId),
-			"ERC721: transfer caller is not owner nor approved"
-		);
-		_beforeSend(_from, _dstChainId, _toAddress, _tokenId);
+		_debitFrom(_from, _dstChainId, _toAddress, _tokenId);
 
 		bytes memory payload = abi.encode(_toAddress, _tokenId);
 		_lzSend(
@@ -147,20 +123,30 @@ contract OmniERC721Upgradeable is
 		emit SendToChain(_from, _dstChainId, _toAddress, _tokenId, nonce);
 	}
 
-	function _beforeSend(
-		address, /* _from */
-		uint16, /* _dstChainId */
-		bytes memory, /* _toAddress */
+	function _debitFrom(
+		address _from,
+		uint16,
+		bytes memory,
 		uint256 _tokenId
-	) internal virtual {
+	) private {
+		// solhint-disable-next-line reason-string
+		require(
+			_isApprovedOrOwner(_msgSender(), _tokenId),
+			"ERC721: send caller is not owner nor approved"
+		);
+		// solhint-disable-next-line reason-string
+		require(
+			ownerOf(_tokenId) == _from,
+			"ERC721: send from incorrect owner"
+		);
 		_burn(_tokenId);
 	}
 
-	function _afterReceive(
-		uint16, /* _srcChainId */
+	function _creditTo(
+		uint16,
 		address _toAddress,
 		uint256 _tokenId
-	) internal virtual {
+	) private {
 		_mint(_toAddress, _tokenId);
 	}
 

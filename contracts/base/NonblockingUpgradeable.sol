@@ -102,6 +102,6 @@ abstract contract NonblockingUpgradeable is
 		// clear the stored message
 		failedMessages[_srcChainId][_srcAddress][_nonce] = bytes32(0);
 		// execute the message. revert if it fails again
-		this.nonblockingLzReceive(_srcChainId, _srcAddress, _nonce, _payload);
+		_nonblockingLzReceive(_srcChainId, _srcAddress, _nonce, _payload);
 	}
 }

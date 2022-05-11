@@ -6,24 +6,6 @@ pragma solidity =0.8.9;
  */
 interface IOmniERC20 {
 	/**
-	 * @dev send `_amount` amount of token to (`_dstChainId`, `_toAddress`)
-	 * @param _dstChainId the destination chain identifier
-	 * @param _toAddress can be any size depending on the `dstChainId`
-	 * @param _amount the quantity of tokens in wei
-	 * @param _refundAddress the address LayerZero refunds if too much message fee is sent
-	 * @param _zroPaymentAddress set to address(0x0) if not paying in ZRO (LayerZero Token)
-	 * @param _adapterParams is a flexible bytes array to indicate messaging adapter services
-	 */
-	function send(
-		uint16 _dstChainId,
-		bytes calldata _toAddress,
-		uint256 _amount,
-		address payable _refundAddress,
-		address _zroPaymentAddress,
-		bytes calldata _adapterParams
-	) external payable;
-
-	/**
 	 * @dev send `_amount` amount of token to (`_dstChainId`, `_toAddress`) from `_from`
 	 * @param _from from address
 	 * @param _dstChainId the destination chain identifier
