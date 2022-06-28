@@ -153,7 +153,7 @@ contract OmniERC721Upgradeable is
 	function supportsInterface(bytes4 interfaceId)
 		public
 		view
-		override(ERC721Upgradeable, AccessControlUpgradeable)
+		override(ERC721Upgradeable, AccessControlEnumerableUpgradeable)
 		returns (bool)
 	{
 		return super.supportsInterface(interfaceId);

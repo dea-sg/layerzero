@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 pragma solidity =0.8.9;
 
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
 import "../interfaces/ILayerZeroReceiver.sol";
 import "../interfaces/ILayerZeroUserApplicationConfig.sol";
 import "../interfaces/ILayerZeroEndpoint.sol";
@@ -11,7 +11,7 @@ import "../interfaces/ILayerZeroBase.sol";
  * a generic LzReceiver implementation
  */
 abstract contract LayerZeroBaseUpgradeable is
-	AccessControlUpgradeable,
+	AccessControlEnumerableUpgradeable,
 	ILayerZeroBase,
 	ILayerZeroReceiver,
 	ILayerZeroUserApplicationConfig
@@ -22,8 +22,15 @@ abstract contract LayerZeroBaseUpgradeable is
 
 	// solhint-disable-next-line func-name-mixedcase
 	function __LayerZeroBase_init(address _endpoint) internal onlyInitializing {
-		__AccessControl_init();
+		__AccessControlEnumerable_init();
 		_setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
+		lzEndpoint = ILayerZeroEndpoint(_endpoint);
+	}
+
+	function setEndpoint(address _endpoint)
+		external
+		onlyRole(DEFAULT_ADMIN_ROLE)
+	{
 		lzEndpoint = ILayerZeroEndpoint(_endpoint);
 	}
 

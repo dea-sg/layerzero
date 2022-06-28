@@ -4,6 +4,7 @@
 
 import { expect, use } from 'chai'
 import { ethers, waffle } from 'hardhat'
+import { Wallet } from 'ethers'
 import { solidity, MockContract } from 'ethereum-waffle'
 import {
 	deploy,
@@ -132,6 +133,31 @@ describe('LayerZeroBaseUpgradeable', () => {
 			const [, other] = await ethers.getSigners()
 			const result = await lzBase1.isTrustedRemote(1, other.address)
 			expect(result).to.be.equal(false)
+		})
+	})
+	describe('setEndpoint', () => {
+		describe('success', () => {
+			it('set address', async () => {
+				expect(await lzBase1.getLzEndpoint()).to.be.equal(mockEndPoint.address)
+				const tmp = Wallet.createRandom()
+				await lzBase1.setEndpoint(tmp.address)
+				expect(await lzBase1.getLzEndpoint()).to.be.equal(tmp.address)
+			})
+		})
+		describe('fail', () => {
+			it('only admin', async () => {
+				const [, other] = await ethers.getSigners()
+				const otherLzBase1 = lzBase1.connect(other)
+				const errorMessage = await makeRoleErrorMessage(
+					utils,
+					other.address,
+					await lzBase1.DEFAULT_ADMIN_ROLE()
+				)
+				const tmp = Wallet.createRandom()
+				await expect(otherLzBase1.setEndpoint(tmp.address)).to.be.revertedWith(
+					errorMessage
+				)
+			})
 		})
 	})
 	describe('setTrustedRemote', () => {
