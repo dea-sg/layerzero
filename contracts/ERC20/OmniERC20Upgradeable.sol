@@ -22,7 +22,7 @@ contract OmniERC20Upgradeable is
 		__Nonblocking_init(_endpoint);
 	}
 
-	function supportsInterface(bytes4 interfaceId)
+	function supportsInterface(bytes4 _interfaceId)
 		public
 		view
 		virtual
@@ -30,10 +30,10 @@ contract OmniERC20Upgradeable is
 		returns (bool)
 	{
 		return
-			interfaceId == type(IOmniERC20).interfaceId ||
-			interfaceId == type(IERC20Upgradeable).interfaceId ||
-			interfaceId == type(IERC20MetadataUpgradeable).interfaceId ||
-			NonblockingUpgradeable.supportsInterface(interfaceId);
+			_interfaceId == type(IOmniERC20).interfaceId ||
+			_interfaceId == type(IERC20Upgradeable).interfaceId ||
+			_interfaceId == type(IERC20MetadataUpgradeable).interfaceId ||
+			NonblockingUpgradeable.supportsInterface(_interfaceId);
 	}
 
 	function sendFrom(

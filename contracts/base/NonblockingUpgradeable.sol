@@ -21,7 +21,7 @@ abstract contract NonblockingUpgradeable is
 		__LayerZeroBase_init(_endpoint);
 	}
 
-	function supportsInterface(bytes4 interfaceId)
+	function supportsInterface(bytes4 _interfaceId)
 		public
 		view
 		virtual
@@ -29,8 +29,8 @@ abstract contract NonblockingUpgradeable is
 		returns (bool)
 	{
 		return
-			interfaceId == type(INonblocking).interfaceId ||
-			super.supportsInterface(interfaceId);
+			_interfaceId == type(INonblocking).interfaceId ||
+			super.supportsInterface(_interfaceId);
 	}
 
 	// overriding the virtual function in LzReceiver

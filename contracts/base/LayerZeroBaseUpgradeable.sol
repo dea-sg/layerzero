@@ -27,7 +27,7 @@ abstract contract LayerZeroBaseUpgradeable is
 		lzEndpoint = ILayerZeroEndpoint(_endpoint);
 	}
 
-	function supportsInterface(bytes4 interfaceId)
+	function supportsInterface(bytes4 _interfaceId)
 		public
 		view
 		virtual
@@ -35,10 +35,10 @@ abstract contract LayerZeroBaseUpgradeable is
 		returns (bool)
 	{
 		return
-			interfaceId == type(ILayerZeroBase).interfaceId ||
-			interfaceId == type(ILayerZeroReceiver).interfaceId ||
-			interfaceId == type(ILayerZeroUserApplicationConfig).interfaceId ||
-			super.supportsInterface(interfaceId);
+			_interfaceId == type(ILayerZeroBase).interfaceId ||
+			_interfaceId == type(ILayerZeroReceiver).interfaceId ||
+			_interfaceId == type(ILayerZeroUserApplicationConfig).interfaceId ||
+			super.supportsInterface(_interfaceId);
 	}
 
 	function setEndpoint(address _endpoint)

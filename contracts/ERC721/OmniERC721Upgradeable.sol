@@ -38,7 +38,7 @@ contract OmniERC721Upgradeable is
 		__Nonblocking_init(_endpoint);
 	}
 
-	function supportsInterface(bytes4 interfaceId)
+	function supportsInterface(bytes4 _interfaceId)
 		public
 		view
 		virtual
@@ -46,9 +46,9 @@ contract OmniERC721Upgradeable is
 		returns (bool)
 	{
 		return
-			interfaceId == type(IOmniERC721).interfaceId ||
-			ERC721Upgradeable.supportsInterface(interfaceId) ||
-			NonblockingUpgradeable.supportsInterface(interfaceId);
+			_interfaceId == type(IOmniERC721).interfaceId ||
+			ERC721Upgradeable.supportsInterface(_interfaceId) ||
+			NonblockingUpgradeable.supportsInterface(_interfaceId);
 	}
 
 	function sendFrom(
