@@ -1,5 +1,4 @@
 /* eslint-disable new-cap */
-
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
 import { expect, use } from 'chai'
@@ -16,6 +15,7 @@ import {
 	TestLayerZeroBaseUpgradeable,
 	TestUtils,
 	TestEndPoint,
+	TestInterfaceId,
 } from '../../typechain-types'
 import { abi as LayerZeroEndpoint } from '../../artifacts/contracts/interfaces/ILayerZeroEndpoint.sol/ILayerZeroEndpoint.json'
 const { deployMockContract } = waffle
@@ -25,6 +25,7 @@ use(solidity)
 describe('LayerZeroBaseUpgradeable', () => {
 	let lzBase1: TestLayerZeroBaseUpgradeable
 	let lzBase2: TestLayerZeroBaseUpgradeable
+	let interfaceId: TestInterfaceId
 	let utils: TestUtils
 	let snapshot: string
 	let mockEndPoint: MockContract
@@ -41,6 +42,7 @@ describe('LayerZeroBaseUpgradeable', () => {
 		mockEndPoint = await deployMockContract(deployer, LayerZeroEndpoint)
 		await lzBase1.initialize(mockEndPoint.address)
 		await lzBase2.initialize(mockEndPoint.address)
+		interfaceId = await deploy<TestInterfaceId>('TestInterfaceId')
 	})
 	beforeEach(async () => {
 		snapshot = await makeSnapshot()
@@ -106,6 +108,37 @@ describe('LayerZeroBaseUpgradeable', () => {
 		it('get endpoint address', async () => {
 			const endPoint = await lzBase1.getLzEndpoint()
 			expect(endPoint).to.be.equal(mockEndPoint.address)
+		})
+	})
+
+	describe('supportsInterface', () => {
+		describe('success', () => {
+			it('ILayerZeroBase', async () => {
+				const id = await interfaceId.getLayerZeroBaseId()
+				const result = await lzBase1.supportsInterface(id)
+				expect(result).to.be.true
+			})
+			it('ILayerZeroReceiver', async () => {
+				const id = await interfaceId.getLayerZeroReceiverId()
+				const result = await lzBase1.supportsInterface(id)
+				expect(result).to.be.true
+			})
+			it('ILayerZeroUserApplicationConfig', async () => {
+				const id = await interfaceId.getLayerZeroUserApplicationConfigId()
+				const result = await lzBase1.supportsInterface(id)
+				expect(result).to.be.true
+			})
+			it('IAccessControlEnumerableUpgradeable', async () => {
+				const id = await interfaceId.getAccessControlEnumerableUpgradeableId()
+				const result = await lzBase1.supportsInterface(id)
+				expect(result).to.be.true
+			})
+		})
+		describe('fail', () => {
+			it('unsupported interface', async () => {
+				const result = await lzBase1.supportsInterface('0x11223344')
+				expect(result).to.be.false
+			})
 		})
 	})
 
