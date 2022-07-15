@@ -2,6 +2,8 @@
 pragma solidity =0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol";
 import "../base/NonblockingUpgradeable.sol";
 import "../interfaces/IOmniERC20.sol";
 
@@ -18,6 +20,20 @@ contract OmniERC20Upgradeable is
 	) internal onlyInitializing {
 		__ERC20_init(_name, _symbol);
 		__Nonblocking_init(_endpoint);
+	}
+
+	function supportsInterface(bytes4 interfaceId)
+		public
+		view
+		virtual
+		override
+		returns (bool)
+	{
+		return
+			interfaceId == type(IOmniERC20).interfaceId ||
+			interfaceId == type(IERC20Upgradeable).interfaceId ||
+			interfaceId == type(IERC20MetadataUpgradeable).interfaceId ||
+			NonblockingUpgradeable.supportsInterface(interfaceId);
 	}
 
 	function sendFrom(

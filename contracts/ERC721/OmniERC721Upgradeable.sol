@@ -38,6 +38,19 @@ contract OmniERC721Upgradeable is
 		__Nonblocking_init(_endpoint);
 	}
 
+	function supportsInterface(bytes4 interfaceId)
+		public
+		view
+		virtual
+		override(ERC721Upgradeable, NonblockingUpgradeable)
+		returns (bool)
+	{
+		return
+			interfaceId == type(IOmniERC721).interfaceId ||
+			ERC721Upgradeable.supportsInterface(interfaceId) ||
+			NonblockingUpgradeable.supportsInterface(interfaceId);
+	}
+
 	function sendFrom(
 		address _from,
 		uint16 _dstChainId,
@@ -148,14 +161,5 @@ contract OmniERC721Upgradeable is
 		uint256 _tokenId
 	) private {
 		_mint(_toAddress, _tokenId);
-	}
-
-	function supportsInterface(bytes4 interfaceId)
-		public
-		view
-		override(ERC721Upgradeable, AccessControlEnumerableUpgradeable)
-		returns (bool)
-	{
-		return super.supportsInterface(interfaceId);
 	}
 }

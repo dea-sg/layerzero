@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 import { expect, use } from 'chai'
 import { ethers, waffle } from 'hardhat'
 import { solidity, MockContract } from 'ethereum-waffle'
 import { deploy, makeSnapshot, resetChain } from '../utils'
-import { TestOmniERC20Upgradeable } from '../../typechain-types'
+import {
+	TestOmniERC20Upgradeable,
+	TestInterfaceId,
+} from '../../typechain-types'
 import { abi as LayerZeroEndpoint } from '../../artifacts/contracts/interfaces/ILayerZeroEndpoint.sol/ILayerZeroEndpoint.json'
 const { deployMockContract } = waffle
 
@@ -10,6 +15,7 @@ use(solidity)
 
 describe('OmniERC20', () => {
 	let token: TestOmniERC20Upgradeable
+	let interfaceId: TestInterfaceId
 	let mockEndPoint: MockContract
 	let snapshot: string
 
@@ -18,12 +24,44 @@ describe('OmniERC20', () => {
 		mockEndPoint = await deployMockContract(deployer, LayerZeroEndpoint)
 		token = await deploy<TestOmniERC20Upgradeable>('TestOmniERC20Upgradeable')
 		await token.initialize('token', 'TOKEN', mockEndPoint.address)
+		interfaceId = await deploy<TestInterfaceId>('TestInterfaceId')
 	})
 	beforeEach(async () => {
 		snapshot = await makeSnapshot()
 	})
 	afterEach(async () => {
 		await resetChain(snapshot)
+	})
+
+	describe('supportsInterface', () => {
+		describe('success', () => {
+			it('ILayerZeroBase', async () => {
+				const id = await interfaceId.getLayerZeroBaseId()
+				const result = await token.supportsInterface(id)
+				expect(result).to.be.true
+			})
+			it('IOmniERC20', async () => {
+				const id = await interfaceId.getOmniERC20Id()
+				const result = await token.supportsInterface(id)
+				expect(result).to.be.true
+			})
+			it('IERC20Upgradeable', async () => {
+				const id = await interfaceId.getERC20UpgradeableId()
+				const result = await token.supportsInterface(id)
+				expect(result).to.be.true
+			})
+			it('IERC20MetadataUpgradeable', async () => {
+				const id = await interfaceId.getERC20MetadataUpgradeableId()
+				const result = await token.supportsInterface(id)
+				expect(result).to.be.true
+			})
+		})
+		describe('fail', () => {
+			it('unsupported interface', async () => {
+				const result = await token.supportsInterface('0x11223344')
+				expect(result).to.be.false
+			})
+		})
 	})
 
 	describe('estimateSendFee', () => {
