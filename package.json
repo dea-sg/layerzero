@@ -35,7 +35,7 @@
 		"@types/node": "18.11.13",
 		"@typescript-eslint/eslint-plugin": "5.46.0",
 		"@typescript-eslint/parser": "5.46.0",
-		"@typechain/hardhat": "6.1.4",
+		"@typechain/hardhat": "6.1.5",
 		"@typechain/ethers-v5": "10.1.1",
 		"solhint": "3.3.7",
 		"typechain": "8.1.1",
