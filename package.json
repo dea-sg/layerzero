@@ -40,7 +40,7 @@
 		"solhint": "3.4.1",
 		"typechain": "8.3.1",
 		"chai": "4.3.8",
-		"del-cli": "5.0.0",
+		"del-cli": "5.0.1",
 		"dotenv": "16.3.1",
 		"eslint": "8.47.0",
 		"eslint-config-prettier": "9.0.0",
