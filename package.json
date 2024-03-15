@@ -37,7 +37,7 @@
 		"@typescript-eslint/parser": "7.2.0",
 		"@typechain/hardhat": "7.0.0",
 		"@typechain/ethers-v5": "11.1.2",
-		"solhint": "4.1.1",
+		"solhint": "4.5.2",
 		"typechain": "8.3.2",
 		"chai": "4.4.1",
 		"del-cli": "5.1.0",
